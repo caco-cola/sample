@@ -1,0 +1,986 @@
+@charset 'UTF-8';
+
+@use './parts/basic';
+@import './parts/mixin';
+/*-----------------------
+HEADER
+-----------------------*/
+
+#header {
+  width: 100%;
+  height: 80px;
+  background-color: #fff;
+  position: fixed;
+  z-index: 10;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25);
+
+  .wrapper {
+    padding-block: 16px;
+    width: 90%;
+    display: flex;
+    margin-inline: auto;
+  }
+
+  .logo {
+    width: 80px;
+    margin-inline: auto;
+    position: absolute;
+    top: 16px;
+    right: 0;
+    left: 0;
+  }
+
+  .top-link {
+    display: flex;
+    position: absolute;
+    top: 30px;
+    right: 5%;
+
+    .instagram {
+      width: 30px;
+      margin-right: 25px;
+    }
+
+    .cart {
+      width: 28px;
+    }
+  }
+
+  #nav {
+    position: absolute;
+    left: 50%; //はじめは隠れてて欲しいから
+    top: -500px;
+    z-index: 20;
+    transition: all .5s;
+    transform: translateX(-50%);
+    color: #fff;
+
+    display: none; //PCでは非表示
+
+    @include sp {
+      display: block;
+    }
+  }
+
+  .toggle-btn {
+    width: 30px;
+    height: 30px;
+    margin-top: 2%;
+    position: relative;
+    transition: all .5s;
+    cursor: pointer;
+    z-index: 20;
+
+    display: none; //PCでは非表示
+
+    @include sp {
+      display: block;
+    }
+
+    span {
+      width: 100%;
+      height: 2px; //線の太さ
+      background-color: #EAB000;
+      transition: all .5s;
+      position: absolute;
+      z-index: 20;
+
+      &:nth-child(1) {
+        top: 33%;
+      }
+
+      &:nth-child(2) {
+        top: 66%;
+      }
+    }
+  }
+
+  #mask {
+    width: 100%;
+    height: 100%;
+    // display: block;
+    visibility: hidden;
+    opacity: 0;
+    position: fixed;
+    top: 0; //top,left0にすることで画面いっぱいに広がる
+    left: 0;
+    background-color: #EAB000;
+    cursor: pointer;
+    transition: all 1s;
+  }
+}
+
+/*-----------------------
+HUMBERGER OPEN　開いた時のスタイル
+-----------------------*/
+
+#header.open {
+  .toggle-btn span:nth-child(1) {
+    top: 50%;
+    transform: rotate(-45deg);
+    background-color: #fff;
+  }
+
+  .toggle-btn span:nth-child(2) {
+    top: 50%;
+    transform: rotate(45deg);
+    background-color: #fff;
+  }
+
+  #nav {
+    top: 40px;
+    z-index: 20;
+  }
+
+  #mask {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+/*-----------------------
+MAIN
+-----------------------*/
+
+// top
+#top {
+  padding-top: 104px;
+  height: 100vh;
+  width: 100%;
+  text-align: center;
+  z-index: -1;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: url(../img/main-pc.jpg) no-repeat center;
+    background-size: cover;
+
+    @include sp {
+      background: url(../img/main-sp.jpg) no-repeat center;
+    }
+  }
+
+  /*=== 9-1-4 矢印が動いてスクロールを促す  ====*/
+
+  /*スクロールダウン全体の場所*/
+  .scrolldown4 {
+    /*描画位置※位置は適宜調整してください*/
+    position: absolute;
+    bottom: 10%;
+    right: 50%;
+    /*矢印の動き1秒かけて永遠にループ*/
+    animation: arrowmove 1.5s ease-in-out infinite;
+  }
+
+  /*下からの距離が変化して全体が下→上→下に動く*/
+  @keyframes arrowmove {
+    0% {
+      bottom: 1%;
+    }
+
+    50% {
+      bottom: 3%;
+    }
+
+    100% {
+      bottom: 1%;
+    }
+  }
+
+  /*Scrollテキストの描写*/
+  .scrolldown4 span {
+    /*描画位置*/
+    position: absolute;
+    left: -20px;
+    bottom: 20px;
+    /*テキストの形状*/
+    color: #fff;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    /*縦書き設定*/
+    -ms-writing-mode: tb-rl;
+    -webkit-writing-mode: vertical-rl;
+    writing-mode: vertical-rl;
+  }
+
+  /* 矢印の描写 */
+  .scrolldown4:before {
+    content: "";
+    /*描画位置*/
+    position: absolute;
+    bottom: 20px;
+    right: -6px;
+    /*矢印の形状*/
+    width: 1px;
+    height: 20px;
+    background: #eee;
+    transform: skewX(-31deg);
+  }
+
+  .scrolldown4:after {
+    content: "";
+    /*描画位置*/
+    position: absolute;
+    bottom: 20px;
+    right: 0;
+    /*矢印の形状*/
+    width: 1px;
+    height: 50px;
+    background: #eee;
+  }
+}
+
+//main
+
+#main {
+  margin-inline: auto;
+  display: flex;
+  background-color: #fff;
+}
+
+//menu
+.menu {
+  width: 300px;
+  background-color: #EAB000;
+  color: #fff;
+  position: relative;
+
+  @include sp {
+    display: none;
+  }
+
+  .inner {
+    width: 80%;
+    padding-top: 85px;
+    margin-inline: auto;
+  }
+}
+
+/*-----------------------
+アコーディオンメニュー
+-----------------------*/
+
+.accordion-area {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+
+  @include sp {
+    width: 280px;
+  }
+
+  li {
+    margin: 10% 0;
+
+    @include sp {
+      margin: 10% 0;
+    }
+  }
+}
+
+// メニュー
+.title {
+  position: relative;
+  cursor: pointer;
+  transition: .5s;
+  font-size: 32px;
+  transition: all .5s ease;
+}
+
+/*アイコンの＋と×*/
+.accordion::before,
+.accordion::after {
+  position: absolute;
+  content: '';
+  width: 15px;
+  height: 2px;
+  background-color: #fff;
+}
+
+.accordion::before {
+  top: 48%;
+  right: 0;
+  transform: rotate(0deg);
+
+}
+
+.accordion::after {
+  top: 48%;
+  right: 0;
+  transform: rotate(90deg);
+
+}
+
+/*　closeというクラスがついたら形状変化　*/
+.accordion.close::before {
+  transform: rotate(45deg);
+}
+
+.accordion.close::after {
+  transform: rotate(-45deg);
+}
+
+/*アコーディオンで現れるエリア*/
+.box {
+  display: none;
+  /*はじめは非表示*/
+  margin: 0 3% 3% 3%;
+  padding-bottom: 5%;
+
+  li {
+    margin-bottom: 10%;
+
+    @include sp {
+      margin-bottom: 5%;
+    }
+  }
+}
+
+.menu-bottom {
+  position: absolute;
+  bottom: 5%;
+
+  @include sp {
+    position: static;
+    margin-top: 20%;
+  }
+
+  li {
+    font-size: 24px;
+    margin-block: 8px;
+
+    @include sp {
+      margin-block: 8%;
+    }
+  }
+}
+
+.section-title {
+  font-size: 128px;
+  font-weight: 500;
+  color: rgba($color: #EAB000, $alpha: 0.25);
+  margin-top: 3%;
+}
+
+.right {
+  width: 100%;
+
+  .section-title {
+    margin-left: 40px;
+
+
+    @include sp {
+      font-size: 100px;
+    }
+  }
+
+  .items {
+    padding-inline: 40px;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+
+    @include sp {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .item {
+      .item-text {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        letter-spacing: 0.2em;
+        margin-top: 8px;
+
+        @include sp {
+          display: inline-block;
+        }
+
+        .item-title {
+          font-size: 20px;
+          font-weight: 500;
+        }
+
+        .price {
+          font-size: 14px;
+
+          @include sp {
+            margin-top: 8px;
+          }
+        }
+      }
+    }
+  }
+
+  .pagenav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 120px;
+    gap: 40px;
+
+
+    li {
+      img {
+        width: 25px;
+      }
+    }
+
+    .next {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.color {
+  display: flex;
+  margin-top: 12px;
+
+  li {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin-right: 3%;
+
+    @include sp {
+      width: 10px;
+      height: 10px;
+    }
+  }
+}
+
+.camel {
+  background-color: #F4993A;
+}
+
+.brown {
+  background-color: #935C04;
+}
+
+.green {
+  background-color: #0D8602;
+}
+
+.black {
+  background-color: #000;
+}
+
+.blue {
+  background-color: #0660C7;
+}
+
+.purple {
+  background-color: #8104AB;
+}
+
+.white {
+  background-color: #fff;
+  border: #000 1px solid;
+}
+
+.yellow {
+  background-color: #EAB000;
+}
+
+.gray {
+  background-color: #7D766C;
+}
+
+footer {
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-align: center;
+  margin-top: 120px;
+  padding-bottom: 16px;
+
+  @include sp {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+}
+
+/*-----------------------
+ABOUT PAGE
+-----------------------*/
+#about {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+
+  @include sp {
+    display: inline-block;
+  }
+
+  .about-img {
+    width: 50%;
+    height: 100vh;
+
+    &::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100vh;
+      background: url(../img/about.jpg) no-repeat center;
+      background-size: cover;
+      z-index: -1;
+
+      @include sp {
+        width: 100%;
+        height: 100vh;
+      }
+    }
+  }
+
+  .container {
+    position: block;
+    width: 50%;
+    margin-left: 30px;
+    position: relative;
+    padding-top: 8%;
+
+    @include sp {
+      margin-top: 100vh;
+      width: 100%;
+      height: calc(100vh - 80px);
+      padding-top: 8%;
+      margin: 0 auto;
+      background-color: #fff;
+      z-index: 5;
+    }
+
+    .section-title {
+      @include sp{
+        text-align: center;
+      }
+    }
+
+    .about-text {
+      width: 90%;
+      margin-top: 40px;
+
+      @include sp {
+        width: 80%;
+        margin-inline: auto;
+      }
+
+      p {
+        margin-block: 16px;
+        font-size: 14px;
+      }
+    }
+
+    .back-btn {
+      width: 100%;
+      display: inline-block;
+      position: absolute;
+      bottom: 60px;
+
+      @include sp {
+        position: static;
+        margin-top: 40px;
+      }
+
+      a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+          width: 24px;
+        }
+
+        p {
+          margin-top: 3px;
+          margin-left: 4px;
+          font-weight: 500;
+          opacity: .8;
+        }
+      }
+    }
+
+  }
+  footer {
+    font-size: 0.8rem;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 4px;
+  }
+}
+
+/*-----------------------
+ACCESS PAGE
+-----------------------*/
+#access {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 80px;
+  background-color: #EAB000;
+  color: #fff;
+
+  .section-title {
+    color: rgba($color: #fff, $alpha: 0.5);
+  }
+
+  .wrapper {
+    width: 500px;
+    margin-top: 20px;
+    margin: 0 auto;
+
+    @include sp {
+      width: 85%;
+    }
+
+    img {
+      border-radius: 8px;
+
+      @include sp {
+        border-radius: 13px;
+      }
+    }
+
+    .access-text {
+      width: 100%;
+      text-align: left;
+      color: #fff;
+      margin-top: 24px;
+
+      @include sp {
+        margin-inline: auto;
+        margin-top: 40px;
+      }
+
+      h3 {
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        margin-bottom: 16px;
+      }
+
+      .flex-item {
+        align-items: center;
+        margin-top: 16px;
+
+        img {
+          width: 20px;
+          height: 20px;
+        }
+
+        p {
+          margin-left: 8px;
+          letter-spacing: 0.18em;
+        }
+      }
+    }
+  }
+}
+
+.flex-item {
+  display: flex;
+}
+
+/*-----------------------
+CONTACT
+-----------------------*/
+
+#contact {
+  padding-top: 80px;
+
+  .section-title {
+    text-align: center;
+  }
+
+  .contact-container {
+    margin-inline: auto;
+    width: 500px;
+
+    form {
+      margin-top: 40px;
+      letter-spacing: 0.2em;
+
+      dl {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+
+        label {
+          cursor: pointer;
+        }
+
+        dt {
+          width: 20%;
+          margin-bottom: 16px;
+          font-size: 18px;
+          font-weight: 500;
+        }
+
+        dd {
+          width: 80%;
+          margin-bottom: 16px;
+
+          input,
+          textarea {
+            width: 100%;
+            border-radius: 5px;
+            box-shadow: inset 0px 0px 4px 2px rgba(17, 17, 26, 0.08);
+            padding: 12px 12px;
+          }
+
+          textarea {
+            height: 180px;
+          }
+        }
+      }
+
+      .send {
+        width: 100%;
+        text-align: right;
+      }
+    }
+  }
+}
+
+/*-----------------------
+products page 共通パーツ
+-----------------------*/
+#products-page {
+  height: 100%;
+
+  .menu {
+    position: fixed;
+    height: 100vh;
+  }
+
+  .inner {
+    padding-top: 80px;
+  }
+
+  .right {
+    padding-top: 80px;
+    margin-left: 300px;
+
+    @include sp {
+      margin-left: 0;
+    }
+
+    .items {
+      margin-top: 24px;
+    }
+  }
+}
+
+/*-----------------------
+item 詳細ページ
+-----------------------*/
+#item-page {
+  width: 90%;
+  margin: 0 auto;
+  padding-top: 80px;
+
+  .section-title {
+    font-size: 100px;
+    margin-left: 0;
+  }
+
+  .item-container {
+    margin-top: 5%;
+    gap: 16px;
+
+    @include sp {
+      flex-direction: column-reverse;
+    }
+  }
+
+  .item-left {
+    width: 50%;
+
+    @include sp {
+      margin-top: 24px;
+      width: 100%;
+    }
+
+    dl {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 20px;
+
+      dt {
+        width: 30%;
+        margin-bottom: 12px;
+      }
+
+      dd {
+        width: 70%;
+        margin-bottom: 12px;
+
+        .color {
+          margin-top: 0;
+
+          li {
+            @include sp {
+              width: 15px;
+              height: 15px;
+            }
+          }
+
+        }
+      }
+    }
+
+    form {
+      margin-top: 40px;
+
+      select {
+        width: 100%;
+        max-width: 400px;
+        cursor: pointer;
+        background-color: #F5F5F5;
+        font-size: 20px;
+        padding-left: 16px;
+        padding-block: 20px;
+        margin-bottom: 16px;
+
+        @include sp {
+          max-width: 100%;
+        }
+      }
+
+      input {
+        @include sp {
+          max-width: 100%;
+        }
+      }
+    }
+
+    .accordion-area {
+      margin-top: 50px;
+
+      @include sp {
+        margin-left: 0;
+      }
+
+      li {
+        margin-block: 7%;
+
+        .title {
+          width: 200px;
+          font-size: 20px;
+          font-weight: 500;
+
+          @include sp {
+            width: 100%;
+          }
+        }
+
+        .line {
+          position: relative;
+
+          &::after {
+            content: '';
+            /*絶対配置で線の位置を決める*/
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            /*線の形状*/
+            width: 100%;
+            height: 2px;
+            background: #EAB000;
+            /*アニメーションの指定*/
+            transition: all .3s;
+            transform: scale(0, 1);
+            /*X方向0、Y方向1*/
+            transform-origin: center top;
+            /*上部中央基点*/
+          }
+
+          &:hover::after {
+            transform: scale(1, 1);
+            /*X方向にスケール拡大*/
+          }
+        }
+
+        .box {
+          margin-top: 3%;
+
+          p {
+            font-size: 14px;
+            letter-spacing: normal;
+            margin-bottom: 1%;
+          }
+
+          ol {
+            display: inline-block;
+            padding: 2%;
+            font-size: 14px;
+            margin-block: 12px;
+            background-color: rgba($color: #EAB000, $alpha: 0.3);
+            box-shadow: rgba($color: #935C06, $alpha: 0.2) 2px 2px 8px 0px;
+
+            li {
+              margin: 8px 0;
+              list-style: decimal;
+              list-style-position: inside;
+              letter-spacing: normal;
+            }
+          }
+        }
+      }
+    }
+
+    .accordion::before,
+    .accordion::after {
+      background-color: #000;
+      width: 12px;
+    }
+  }
+
+  .item-right {
+    width: 50%;
+
+    @include sp {
+      width: 100%;
+    }
+
+    .item-right-sub {
+      display: flex;
+
+      li {
+        width: 100px;
+        cursor: pointer;
+        transition: all 0.5s;
+        overflow: hidden;
+
+        img:hover {
+          transition: all 0.5s;
+          transform: scale(1.2, 1.2);
+        }
+      }
+    }
+  }
+}
+
+#button {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  background-color: #EAB000;
+  color: #fff;
+  font-size: 24px;
+  padding-block: 20px;
+  border-radius: 50px;
+  font-weight: 500;
+  box-shadow: rgba($color: #935C06, $alpha: 0.6) 0 4px 4px 0;
+}

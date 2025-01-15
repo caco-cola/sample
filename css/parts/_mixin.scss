@@ -1,0 +1,8 @@
+// ブレイクポイントを指定
+$sp: 968px;
+
+@mixin sp {
+  @media screen and (max-width: ($sp)) {
+    @content;
+  }
+}
